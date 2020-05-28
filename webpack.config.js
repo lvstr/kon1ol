@@ -25,7 +25,7 @@ module.exports = {
 	},
 	output: {
 		path: path.join(__dirname, "public"),
-		filename: "cursed.js",
+		filename: "konsol.js",
 	},
 	devtool: "cheap-module-eval-source-map",
 	devServer: {

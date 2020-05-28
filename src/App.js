@@ -1,83 +1,85 @@
 import React, { useState, useEffect } from "react";
 import "./style.scss";
-import willy from "./willy";
+import soal from "./Soal";
 
-const Menu = (props) => (
-	<div id="greet">
-		<h1>willytweet generator</h1>
-		<span>
-			{"</>"} with ❤ by{" "}
-			<a href="http://github.com/dimasriat">dimasriat</a>
-		</span>
-		<br />
-		<span>
-			<a href="http://willy.dimskuy.xyz"> willy.dimskuy.xyz</a>
-		</span>
-	</div>
-);
-
-const OutputText = (props) => {
-	let key = 0;
-	return (
-		<div>
-			<div id="outputText">
-				{props.text.split("\n").map((item) => (
-					<span key={`${item}${++key}`}>
-						{item}
-						<br />
-					</span>
-				))}
-			</div>
-			<div id="note">
-				<span>
-					coba ktikkan ssuatu lalu akhiri dg tnda ttik / tnda baca / spasi
-				</span>
-				<span>
-					{"</>"} with ❤ by{" "}
-					<a href="http://github.com/dimasriat">dimasriat</a>
-				</span>
-			</div>
-		</div>
-	);
-};
+const loading = [
+	"*ontol",
+	"k*ntol",
+	"ko*tol",
+	"kon*ol",
+	"kont*l",
+	"konto*",
+	"**ntol",
+	"*o*tol",
+	"*on*ol",
+	"*ont*l",
+	"*onto*",
+	"k**tol",
+	"k*n*ol",
+	"k*nt*l",
+	"k*nto*",
+	"ko**ol",
+	"ko*t*l",
+	"ko*to*",
+	"kon**l",
+	"kon*o*",
+	"kont**",
+];
 
 const App = (props) => {
-	const [tweet, setTweet] = useState("");
-	const [table, setTable] = useState([]);
-	const [result, setResult] = useState("");
-	//setting the result
+	const [answer, setAnswer] = useState("");
+	const [nomorSoal, setNomorSoal] = useState(0);
+	const [correct, setCorrect] = useState(false);
+	const showSoal = soal[nomorSoal];
 	useEffect(() => {
-		setResult("");
-		table.forEach((row) => {
-			setResult(
-				(prevResult) => `${prevResult}${row.res}${row.space ? " " : ""}`
-			);
-		});
-	}, [table]);
-	//debugging
-	useEffect(() => {
-		console.clear();
-		console.table(table);
-	}, [result]);
-	//render
+		if (answer === showSoal.answer) {
+			setCorrect(true);
+			setAnswer("");
+			setTimeout(() => {
+				setNomorSoal((prevState) => prevState + 1);
+				setCorrect(false);
+			}, 3000);
+		}
+	}, [answer]);
 	return (
-		<div id="wrapper">
-			<div id="output">
-				{tweet ? <OutputText text={result} /> : <Menu />}
-			</div>
-
-			<div id="input">
-				<textarea
-					value={tweet}
-					onChange={(e) => {
-						setTweet(e.target.value);
-						setTable(willy(e.target.value));
-					}}
-					placeholder="ktik di sini ya mniss..."
-				/>
-			</div>
+		<div className={`wrapper ${nomorSoal >= soal.length ? "ending" : ""}`}>
+			{nomorSoal >= soal.length ? (
+				<div id="ending">
+					<h1>YOU DID IT! GOODJOB.</h1>
+					<p>
+						made with 😍 by{" "}
+						<a href="https://github.com/dimasriat">
+							dimasriat
+						</a>
+					</p>
+				</div>
+			) : (
+				<>
+					<h1 className={correct ? "correct" : ""}>
+						{correct
+							? `${showSoal.answer}.`
+							: `${showSoal.pattern}?`}
+					</h1>
+					<p>{showSoal.question}</p>
+					<div className={`hideman ${correct ? "hide" : ""}`}>
+						<input
+							type="text"
+							value={answer}
+							onChange={(e) =>
+								setAnswer(e.target.value.toLowerCase())
+							}
+							placeholder="tulis jawaban di sini..."
+						/>
+					</div>
+					<nav>
+						made with 😍 by{" "}
+						<a href="https://github.com/dimasriat">
+							dimasriat
+						</a>
+					</nav>
+				</>
+			)}
 		</div>
 	);
 };
-
 export default App;
