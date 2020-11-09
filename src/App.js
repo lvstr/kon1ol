@@ -71,12 +71,7 @@ const App = (props) => {
 							placeholder="tulis jawaban di sini..."
 						/>
 					</div>
-					<nav>
-						made with 😍 by{" "}
-						<a href="https://github.com/dimasriat">
-							dimasriat
-						</a>
-					</nav>
+					
 				</>
 			)}
 		</div>
